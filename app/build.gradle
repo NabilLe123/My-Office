@@ -34,6 +34,9 @@ dependencies {
     //amazon chime
     implementation(name: 'amazon-chime-sdk', ext: 'aar')
     implementation(name: 'amazon-chime-sdk-media', ext: 'aar')
+    //retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.7.1'
+    implementation 'com.squareup.retrofit2:converter-gson:2.7.1'
 
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

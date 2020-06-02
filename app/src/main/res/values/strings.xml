@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">My Office</string>
+    <string name="edit_meeting_id">Meeting ID</string>
+    <string name="edit_name">Your Name</string>
+    <string name="main_title">Join a meeting</string>
+    <string name="main_continue">Continue</string>
+    <string name="meeting_join">Join</string>
+    <string name="meeting_leave">Leave Meeting</string>
+    <string name="meeting_mute">Toggle Mute</string>
+    <string name="user_notification_meeting_id_invalid">Meeting ID is invalid</string>
+    <string name="user_notification_attendee_name_invalid">Attendee name is invalid</string>
+    <string name="user_notification_meeting_start_error">There was an error starting the meeting. Please try again</string>
 </resources>
