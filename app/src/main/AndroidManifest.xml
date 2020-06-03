@@ -28,6 +28,7 @@
             <intent-filter>
                 <data
                     android:host="stgapp.leadergroup.com"
+                    android:path="/Axionic Meeting/App/Meetingv2.html"
                     android:scheme="https" />
                 <action android:name="android.intent.action.VIEW" />
 
