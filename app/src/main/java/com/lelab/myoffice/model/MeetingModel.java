@@ -8,7 +8,7 @@ public class MeetingModel implements Serializable {
     @SerializedName("externalMeetingId")
     private String externalMeetingId;
     @SerializedName("mediaPlacement")
-    private MediaPlacement mediaPlacement;
+    private MediaPlacementVal mediaPlacement;
     @SerializedName("mediaRegion")
     private String mediaRegion;
     @SerializedName("meetingId")
@@ -22,11 +22,11 @@ public class MeetingModel implements Serializable {
         this.externalMeetingId = externalMeetingId;
     }
 
-    public MediaPlacement getMediaPlacement() {
+    public MediaPlacementVal getMediaPlacement() {
         return mediaPlacement;
     }
 
-    public void setMediaPlacement(MediaPlacement mediaPlacement) {
+    public void setMediaPlacement(MediaPlacementVal mediaPlacement) {
         this.mediaPlacement = mediaPlacement;
     }
 

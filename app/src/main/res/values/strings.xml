@@ -7,7 +7,22 @@
     <string name="meeting_join">Join</string>
     <string name="meeting_leave">Leave Meeting</string>
     <string name="meeting_mute">Toggle Mute</string>
+    <string name="preview_meeting_info">Ready to join meeting %1$s as %2$s.</string>
+    <string name="device_management_title">Select devices</string>
+    <string name="audio_device_title">Audio Device</string>
+    <string name="volume_indicator">Volume Indicator</string>
+    <string name="active_speaker_text">Active Speaker</string>
+    <string name="switch_camera">Switch Camera</string>
+    <string name="toggle_camera">Toggle Camera</string>
+    <string name="speaker_button">Toggle Speaker</string>
+    <string name="toggle_mute">Toggle Mute</string>
+    <string name="screen_share_view">Screen Share</string>
+    <string name="video_view">Video Collection</string>
+    <string name="permission_required">Permission Required</string>
+
+    <!-- Notify users for errors -->
     <string name="user_notification_meeting_id_invalid">Meeting ID is invalid</string>
     <string name="user_notification_attendee_name_invalid">Attendee name is invalid</string>
+    <string name="user_notification_permission_error">WebRTC cannot work without permissions</string>
     <string name="user_notification_meeting_start_error">There was an error starting the meeting. Please try again</string>
 </resources>

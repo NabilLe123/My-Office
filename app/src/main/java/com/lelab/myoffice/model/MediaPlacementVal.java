@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class MediaPlacement implements Serializable {
+public class MediaPlacementVal implements Serializable {
     @SerializedName("audioFallbackUrl")
     private String audioFallbackUrl;
     @SerializedName("audioHostUrl")
