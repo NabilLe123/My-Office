@@ -1,5 +1,6 @@
 package com.lelab.myoffice;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -25,6 +26,10 @@ public class MainActivity extends AppCompatActivity {
     EditText nameEditText;
     ProgressBar authenticationProgressBar;
     Button buttonContinue;
+
+    public static String MEETING_RESPONSE_KEY = "MEETING_RESPONSE";
+    public static String MEETING_ID_KEY = "MEETING_ID";
+    public static String NAME_KEY = "NAME";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +74,12 @@ public class MainActivity extends AppCompatActivity {
 
                     authenticationProgressBar.setVisibility(View.GONE);
                     Toast.makeText(MainActivity.this, "Success", Toast.LENGTH_SHORT).show();
+
+                    Intent intent = new Intent(MainActivity.this, InMeetingActivity.class);
+                    intent.putExtra(MEETING_RESPONSE_KEY, joinInfoResponse);
+                    intent.putExtra(MEETING_ID_KEY, meetingID);
+                    intent.putExtra(NAME_KEY, yourName);
+                    startActivity(intent);
                 } else {
                     authenticationProgressBar.setVisibility(View.GONE);
                     buttonContinue.setVisibility(View.VISIBLE);

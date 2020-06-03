@@ -2,7 +2,9 @@ package com.lelab.myoffice.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Meeting {
+import java.io.Serializable;
+
+public class Meeting implements Serializable {
     @SerializedName("externalMeetingId")
     private String externalMeetingId;
     @SerializedName("mediaPlacement")

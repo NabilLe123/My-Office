@@ -2,7 +2,9 @@ package com.lelab.myoffice.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class MediaPlacement {
+import java.io.Serializable;
+
+public class MediaPlacement implements Serializable {
     @SerializedName("audioFallbackUrl")
     private String audioFallbackUrl;
     @SerializedName("audioHostUrl")

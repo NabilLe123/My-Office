@@ -2,7 +2,9 @@ package com.lelab.myoffice.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Attendee {
+import java.io.Serializable;
+
+public class Attendee implements Serializable {
     @SerializedName("attendeeId")
     private String attendeeId;
     @SerializedName("externalUserId")

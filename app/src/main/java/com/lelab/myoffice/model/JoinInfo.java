@@ -2,7 +2,9 @@ package com.lelab.myoffice.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class JoinInfo {
+import java.io.Serializable;
+
+public class JoinInfo implements Serializable {
     @SerializedName("meeting")
     private Meeting meeting;
     @SerializedName("attendee")
