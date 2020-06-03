@@ -3,6 +3,7 @@ package com.lelab.myoffice;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -54,6 +55,11 @@ public class MainActivity extends AppCompatActivity {
         buttonContinue = findViewById(R.id.buttonContinue);
         buttonContinue.setOnClickListener(v -> joinMeeting());
 
+        Uri data = getIntent().getData();
+        String meetingIdVal = data != null ? data.getQueryParameter("m") : "";
+        Log.d("rxjava", " : " + meetingIdVal);
+        meetingEditText.setText(meetingIdVal);
+
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.MODIFY_AUDIO_SETTINGS) == PackageManager.PERMISSION_DENIED ||
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_DENIED ||
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED) {
@@ -89,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if (response.code() == 200 && response.body() != null) {
                     authenticationProgressBar.setVisibility(View.GONE);
+                    buttonContinue.setVisibility(View.VISIBLE);
                     Toast.makeText(MainActivity.this, "Success", Toast.LENGTH_SHORT).show();
 
                     JoinInfoResponse joinInfoResponse = response.body();
@@ -112,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
                     intent.putExtra(MEETING_ID_KEY, meetingID);
                     intent.putExtra(NAME_KEY, yourName);
                     startActivity(intent);
+                    finish();
                 } else {
                     authenticationProgressBar.setVisibility(View.GONE);
                     buttonContinue.setVisibility(View.VISIBLE);
