@@ -6,23 +6,23 @@ import java.io.Serializable;
 
 public class JoinInfo implements Serializable {
     @SerializedName("meeting")
-    private Meeting meeting;
+    private MeetingModel meeting;
     @SerializedName("attendee")
-    private Attendee attendee;
+    private AttendeeModel attendee;
 
-    public Meeting getMeeting() {
+    public MeetingModel getMeeting() {
         return meeting;
     }
 
-    public void setMeeting(Meeting meeting) {
+    public void setMeeting(MeetingModel meeting) {
         this.meeting = meeting;
     }
 
-    public Attendee getAttendee() {
+    public AttendeeModel getAttendee() {
         return attendee;
     }
 
-    public void setAttendee(Attendee attendee) {
+    public void setAttendee(AttendeeModel attendee) {
         this.attendee = attendee;
     }
 }

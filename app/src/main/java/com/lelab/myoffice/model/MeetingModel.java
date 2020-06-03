@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class Meeting implements Serializable {
+public class MeetingModel implements Serializable {
     @SerializedName("externalMeetingId")
     private String externalMeetingId;
     @SerializedName("mediaPlacement")
