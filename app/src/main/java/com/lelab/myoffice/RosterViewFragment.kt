@@ -19,11 +19,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.amazonaws.services.chime.sdk.meetings.audiovideo.AttendeeInfo
-import com.amazonaws.services.chime.sdk.meetings.audiovideo.AudioVideoFacade
-import com.amazonaws.services.chime.sdk.meetings.audiovideo.AudioVideoObserver
-import com.amazonaws.services.chime.sdk.meetings.audiovideo.SignalUpdate
-import com.amazonaws.services.chime.sdk.meetings.audiovideo.VolumeUpdate
+import com.amazonaws.services.chime.sdk.meetings.audiovideo.*
 import com.amazonaws.services.chime.sdk.meetings.audiovideo.audio.activespeakerdetector.ActiveSpeakerObserver
 import com.amazonaws.services.chime.sdk.meetings.audiovideo.audio.activespeakerpolicy.DefaultActiveSpeakerPolicy
 import com.amazonaws.services.chime.sdk.meetings.audiovideo.metric.MetricsObserver
@@ -36,9 +32,9 @@ import com.amazonaws.services.chime.sdk.meetings.session.MeetingSessionStatus
 import com.amazonaws.services.chime.sdk.meetings.session.MeetingSessionStatusCode
 import com.amazonaws.services.chime.sdk.meetings.utils.logger.ConsoleLogger
 import com.amazonaws.services.chime.sdk.meetings.utils.logger.LogLevel
+import com.google.android.material.tabs.TabLayout
 import com.lelab.myoffice.model.RosterAttendee
 import com.lelab.myoffice.model.VideoCollectionTile
-import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -46,8 +42,8 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
 class RosterViewFragment : Fragment(),
-    RealtimeObserver, AudioVideoObserver, VideoTileObserver,
-    MetricsObserver, ActiveSpeakerObserver {
+        RealtimeObserver, AudioVideoObserver, VideoTileObserver,
+        MetricsObserver, ActiveSpeakerObserver {
     private val logger = ConsoleLogger(LogLevel.DEBUG)
     private val mutex = Mutex()
     private val uiScope = CoroutineScope(Dispatchers.Main)
@@ -74,7 +70,7 @@ class RosterViewFragment : Fragment(),
     private val CONTENT_NAME_SUFFIX = "<<Content>>"
 
     private val WEBRTC_PERM = arrayOf(
-        Manifest.permission.CAMERA
+            Manifest.permission.CAMERA
     )
 
     enum class SubTab(val position: Int) {
@@ -98,7 +94,7 @@ class RosterViewFragment : Fragment(),
             val fragment = RosterViewFragment()
 
             fragment.arguments =
-                Bundle().apply { putString(MainActivity.MEETING_ID_KEY, meetingId) }
+                    Bundle().apply { putString(MainActivity.MEETING_ID_KEY, meetingId) }
             return fragment
         }
     }
@@ -119,9 +115,9 @@ class RosterViewFragment : Fragment(),
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         val view: View = inflater.inflate(R.layout.fragment_roster_view, container, false)
         val activity = activity as Context
@@ -138,7 +134,7 @@ class RosterViewFragment : Fragment(),
         buttonVideo.setOnClickListener { toggleVideo() }
 
         view.findViewById<ImageButton>(R.id.buttonLeave)
-            ?.setOnClickListener { listener.onLeaveMeeting() }
+                ?.setOnClickListener { listener.onLeaveMeeting() }
 
         setupSubTabs(view)
 
@@ -158,21 +154,21 @@ class RosterViewFragment : Fragment(),
         recyclerViewRoster.adapter = rosterAdapter
 
         recyclerViewVideoCollection =
-            view.findViewById(R.id.recyclerViewVideoCollection)
+                view.findViewById(R.id.recyclerViewVideoCollection)
         recyclerViewVideoCollection.layoutManager = LinearLayoutManager(activity)
         videoTileAdapter = VideoCollectionTileAdapter(currentVideoTiles.values, audioVideo, context)
         recyclerViewVideoCollection.adapter = videoTileAdapter
 
         recyclerViewScreenShareCollection =
-            view.findViewById(R.id.recyclerViewScreenShareCollection)
+                view.findViewById(R.id.recyclerViewScreenShareCollection)
         recyclerViewScreenShareCollection.layoutManager = LinearLayoutManager(activity)
         screenTileAdapter =
-            VideoCollectionTileAdapter(currentScreenTiles.values, audioVideo, context)
+                VideoCollectionTileAdapter(currentScreenTiles.values, audioVideo, context)
         recyclerViewScreenShareCollection.adapter = screenTileAdapter
 
         tabLayout = view.findViewById(R.id.tabLayoutRosterView)
         SubTab.values()
-            .forEach { tabLayout.addTab(tabLayout.newTab().setText(it.name).setContentDescription("${it.name} Tab")) }
+                .forEach { tabLayout.addTab(tabLayout.newTab().setText(it.name).setContentDescription("${it.name} Tab")) }
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabReselected(tab: TabLayout.Tab?) {
             }
@@ -217,13 +213,13 @@ class RosterViewFragment : Fragment(),
                 volumeUpdates.forEach { (attendeeInfo, volumeLevel) ->
                     currentRoster[attendeeInfo.attendeeId]?.let {
                         currentRoster[attendeeInfo.attendeeId] =
-                            RosterAttendee(
-                                it.attendeeId,
-                                it.attendeeName,
-                                volumeLevel,
-                                it.signalStrength,
-                                it.isActiveSpeaker
-                            )
+                                RosterAttendee(
+                                        it.attendeeId,
+                                        it.attendeeName,
+                                        volumeLevel,
+                                        it.signalStrength,
+                                        it.isActiveSpeaker
+                                )
                     }
                 }
 
@@ -238,13 +234,13 @@ class RosterViewFragment : Fragment(),
                 signalUpdates.forEach { (attendeeInfo, signalStrength) ->
                     currentRoster[attendeeInfo.attendeeId]?.let {
                         currentRoster[attendeeInfo.attendeeId] =
-                            RosterAttendee(
-                                it.attendeeId,
-                                it.attendeeName,
-                                it.volumeLevel,
-                                signalStrength,
-                                it.isActiveSpeaker
-                            )
+                                RosterAttendee(
+                                        it.attendeeId,
+                                        it.attendeeName,
+                                        it.volumeLevel,
+                                        signalStrength,
+                                        it.isActiveSpeaker
+                                )
                     }
                 }
 
@@ -258,13 +254,13 @@ class RosterViewFragment : Fragment(),
             mutex.withLock {
                 attendeeInfo.forEach { (attendeeId, externalUserId) ->
                     currentRoster.getOrPut(
-                        attendeeId,
-                        {
-                            RosterAttendee(
-                                attendeeId,
-                                getAttendeeName(attendeeId, externalUserId)
-                            )
-                        })
+                            attendeeId,
+                            {
+                                RosterAttendee(
+                                        attendeeId,
+                                        getAttendeeName(attendeeId, externalUserId)
+                                )
+                            })
                 }
 
                 rosterAdapter.notifyDataSetChanged()
@@ -299,8 +295,8 @@ class RosterViewFragment : Fragment(),
     override fun onAttendeesMuted(attendeeInfo: Array<AttendeeInfo>) {
         attendeeInfo.forEach { (attendeeId, externalUserId) ->
             logger.info(
-                TAG,
-                "Attendee with attendeeId $attendeeId and externalUserId $externalUserId muted"
+                    TAG,
+                    "Attendee with attendeeId $attendeeId and externalUserId $externalUserId muted"
             )
         }
     }
@@ -308,8 +304,8 @@ class RosterViewFragment : Fragment(),
     override fun onAttendeesUnmuted(attendeeInfo: Array<AttendeeInfo>) {
         attendeeInfo.forEach { (attendeeId, externalUserId) ->
             logger.info(
-                TAG,
-                "Attendee with attendeeId $attendeeId and externalUserId $externalUserId unmuted"
+                    TAG,
+                    "Attendee with attendeeId $attendeeId and externalUserId $externalUserId unmuted"
             )
         }
     }
@@ -322,13 +318,13 @@ class RosterViewFragment : Fragment(),
                 currentRoster.values.forEach { attendee ->
                     if (activeSpeakers.contains(attendee.attendeeId) != attendee.isActiveSpeaker) {
                         currentRoster[attendee.attendeeId] =
-                            RosterAttendee(
-                                attendee.attendeeId,
-                                attendee.attendeeName,
-                                attendee.volumeLevel,
-                                attendee.signalStrength,
-                                !attendee.isActiveSpeaker
-                            )
+                                RosterAttendee(
+                                        attendee.attendeeId,
+                                        attendee.attendeeName,
+                                        attendee.volumeLevel,
+                                        attendee.signalStrength,
+                                        !attendee.isActiveSpeaker
+                                )
                         needUpdate = true
                     }
                 }
@@ -345,7 +341,9 @@ class RosterViewFragment : Fragment(),
     }
 
     private fun getAttendeeName(attendeeId: String, externalUserId: String): String {
-        val attendeeName = externalUserId.split('#')[1]
+        var attendeeName = externalUserId
+        if (externalUserId.contains('#'))
+            attendeeName = externalUserId.split('#')[1]
 
         return if (attendeeId.endsWith(CONTENT_DELIMITER)) {
             "$attendeeName $CONTENT_NAME_SUFFIX"
@@ -379,8 +377,8 @@ class RosterViewFragment : Fragment(),
             startLocalVideo()
         } else {
             requestPermissions(
-                WEBRTC_PERM,
-                WEBRTC_PERMISSION_REQUEST_CODE
+                    WEBRTC_PERM,
+                    WEBRTC_PERMISSION_REQUEST_CODE
             )
         }
     }
@@ -391,22 +389,22 @@ class RosterViewFragment : Fragment(),
     }
 
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
+            requestCode: Int,
+            permissions: Array<out String>,
+            grantResults: IntArray
     ) {
         when (requestCode) {
             WEBRTC_PERMISSION_REQUEST_CODE -> {
                 val isMissingPermission: Boolean =
-                    grantResults.isEmpty() || grantResults.any { PackageManager.PERMISSION_GRANTED != it }
+                        grantResults.isEmpty() || grantResults.any { PackageManager.PERMISSION_GRANTED != it }
 
                 if (isMissingPermission) {
                     Toast.makeText(
-                        context!!,
-                        getString(R.string.user_notification_permission_error),
-                        Toast.LENGTH_SHORT
+                            context!!,
+                            getString(R.string.user_notification_permission_error),
+                            Toast.LENGTH_SHORT
                     )
-                        .show()
+                            .show()
                 } else {
                     startLocalVideo()
                 }
@@ -439,7 +437,7 @@ class RosterViewFragment : Fragment(),
     private fun canShowMoreRemoteVideoTile(): Boolean {
         // Current max amount of tiles should preserve one spot for local video
         val currentMax =
-            if (currentVideoTiles.containsKey(LOCAL_TILE_ID)) MAX_TILE_COUNT else MAX_TILE_COUNT - 1
+                if (currentVideoTiles.containsKey(LOCAL_TILE_ID)) MAX_TILE_COUNT else MAX_TILE_COUNT - 1
         return currentVideoTiles.size < currentMax
     }
 
@@ -459,10 +457,10 @@ class RosterViewFragment : Fragment(),
     }
 
     override fun onAudioSessionStartedConnecting(reconnecting: Boolean) =
-        notify("Audio started connecting. reconnecting: $reconnecting")
+            notify("Audio started connecting. reconnecting: $reconnecting")
 
     override fun onAudioSessionStarted(reconnecting: Boolean) =
-        notify("Audio successfully started. reconnecting: $reconnecting")
+            notify("Audio successfully started. reconnecting: $reconnecting")
 
     override fun onAudioSessionDropped() {
         notify("Audio session dropped")
@@ -492,14 +490,14 @@ class RosterViewFragment : Fragment(),
     }
 
     override fun onVideoSessionStopped(sessionStatus: MeetingSessionStatus) =
-        notify("Video stopped for reason: ${sessionStatus.statusCode}")
+            notify("Video stopped for reason: ${sessionStatus.statusCode}")
 
     override fun onVideoTileAdded(tileState: VideoTileState) {
         uiScope.launch {
             logger.info(
-                TAG,
-                "Video track added, titleId: ${tileState.tileId}, attendeeId: ${tileState.attendeeId}" +
-                        ", isContent ${tileState.isContent}"
+                    TAG,
+                    "Video track added, titleId: ${tileState.tileId}, attendeeId: ${tileState.attendeeId}" +
+                            ", isContent ${tileState.isContent}"
             )
             if (tileState.isContent) {
                 if (!currentScreenTiles.containsKey(tileState.tileId) && canShowMoreRemoteScreenTile()) {
@@ -525,8 +523,8 @@ class RosterViewFragment : Fragment(),
             val tileId: Int = tileState.tileId
 
             logger.info(
-                TAG,
-                "Video track removed, titleId: $tileId, attendeeId: ${tileState.attendeeId}"
+                    TAG,
+                    "Video track removed, titleId: $tileId, attendeeId: ${tileState.attendeeId}"
             )
             if (currentVideoTiles.containsKey(tileId)) {
                 audioVideo.unbindVideoView(tileId)
@@ -534,7 +532,7 @@ class RosterViewFragment : Fragment(),
                 // Show next video tileState if available
                 if (nextVideoTiles.isNotEmpty() && canShowMoreRemoteVideoTile()) {
                     val nextTileState: VideoTileState =
-                        nextVideoTiles.entries.iterator().next().value.videoTileState
+                            nextVideoTiles.entries.iterator().next().value.videoTileState
                     showVideoTile(nextTileState)
                     nextVideoTiles.remove(nextTileState.tileId)
                 }
@@ -553,9 +551,9 @@ class RosterViewFragment : Fragment(),
         if (tileState.pauseState == VideoPauseState.PausedForPoorConnection) {
             val attendeeName = currentRoster[tileState.attendeeId]?.attendeeName ?: ""
             notify(
-                "Video for attendee $attendeeName " +
-                        " has been paused for poor network connection," +
-                        " video will automatically resume when connection improves"
+                    "Video for attendee $attendeeName " +
+                            " has been paused for poor network connection," +
+                            " video will automatically resume when connection improves"
             )
         }
     }
